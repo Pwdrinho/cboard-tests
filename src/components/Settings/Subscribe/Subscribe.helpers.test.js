@@ -47,3 +47,43 @@ describe('formatTitle - complementacao estrutural e caracterizacao', () => {
     }
   );
 });
+
+describe('formatTitle - melhoria R1 por TDD', () => {
+  test('TDD01 remove todas as identificacoes repetidas', () => {
+    const title = 'Anual(Cboard AAC)(Cboard AAC)';
+    const result = formatTitle(title);
+    expect(result).toBe('Anual');
+  });
+});
+
+describe('formatTitle - melhoria R2 por TDD', () => {
+  test('TDD02 apara extremidades quando remove a identificacao', () => {
+    const title = '  Anual (Cboard AAC)  ';
+    const result = formatTitle(title);
+    expect(result).toBe('Anual');
+  });
+});
+
+describe('formatTitle - verificacao sistematica das melhorias', () => {
+  test.each([
+    [
+      'RF01 identificacoes nas duas extremidades',
+      '(Cboard AAC)Anual(Cboard AAC)',
+      'Anual'
+    ],
+    [
+      'RF02 preserva espacos internos',
+      '  Anual  Premium (Cboard AAC)  ',
+      'Anual  Premium'
+    ],
+    ['RF03 identificacao com espacos sem nome', ' (Cboard AAC) ', ''],
+    [
+      'RF04 remove tabulacao e quebra nas extremidades',
+      '\tAnual(Cboard AAC)\n',
+      'Anual'
+    ]
+  ])('%s', (_scenario, title, expected) => {
+    const result = formatTitle(title);
+    expect(result).toBe(expected);
+  });
+});

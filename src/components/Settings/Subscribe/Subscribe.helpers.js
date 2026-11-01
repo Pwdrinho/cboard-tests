@@ -14,7 +14,11 @@ export const formatDuration = (iso) => {
   }
 };
 
+const APP_TITLE_MARKER = '(Cboard AAC)';
+
 export const formatTitle = (title) => {
   if (!title) return '';
-  return title.replace('(Cboard AAC)', '');
+  const formattedTitle = title.split(APP_TITLE_MARKER).join('');
+  if (formattedTitle === title) return title;
+  return formattedTitle.trim();
 };
