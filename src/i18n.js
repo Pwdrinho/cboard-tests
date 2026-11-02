@@ -61,8 +61,17 @@ export function standardizeLanguageCode(lang) {
 }
 
 export function getDefaultLang(langs) {
+  const deviceLang = window.navigator.language;
+  if (!deviceLang) {
+    return langs.includes(DEFAULT_LANG) ? DEFAULT_LANG : langs[0];
+  }
+  const normalizedDeviceLang = normalizeLanguageCode(deviceLang);
+  if (langs.includes(normalizedDeviceLang)) {
+    return normalizedDeviceLang;
+  }
+  const deviceLanguage = deviceLang.slice(0, 2);
   for (let i = 0; i < langs.length; i++) {
-    if (window.navigator.language.slice(0, 2) === langs[i].slice(0, 2)) {
+    if (deviceLanguage === langs[i].slice(0, 2)) {
       return langs[i];
     }
   }

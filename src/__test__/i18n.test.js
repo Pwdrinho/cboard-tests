@@ -21,6 +21,45 @@ describe('i18n', () => {
   });
 });
 
+describe('getDefaultLang', () => {
+  const originalLanguage = Object.getOwnPropertyDescriptor(
+    window.navigator,
+    'language'
+  );
+
+  afterEach(() => {
+    if (originalLanguage) {
+      Object.defineProperty(window.navigator, 'language', originalLanguage);
+    } else {
+      delete window.navigator.language;
+    }
+  });
+
+  it('should preserve the exact regional locale pt-PT instead of falling back to pt-BR', () => {
+    const appLangs = ['en-US', 'pt-BR', 'pt-PT'];
+    Object.defineProperty(window.navigator, 'language', {
+      value: 'pt-PT',
+      configurable: true
+    });
+
+    const defaultLang = i18n.getDefaultLang(appLangs);
+
+    expect(defaultLang).toBe('pt-PT');
+  });
+
+  it('should return the default language when the device language is not available', () => {
+    const appLangs = ['pt-BR', 'en-US'];
+    Object.defineProperty(window.navigator, 'language', {
+      value: undefined,
+      configurable: true
+    });
+
+    const defaultLang = i18n.getDefaultLang(appLangs);
+
+    expect(defaultLang).toBe('en-US');
+  });
+});
+
 describe('getVoiceURI', () => {
   describe('when there is no compatible voice', () => {
     it('should return EMPTY_VOICES when the voices list is empty', () => {
