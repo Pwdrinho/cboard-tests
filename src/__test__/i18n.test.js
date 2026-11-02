@@ -1,4 +1,11 @@
 import * as i18n from '../i18n';
+import { EMPTY_VOICES } from '../providers/SpeechProvider/SpeechProvider.constants';
+
+const makeVoice = (voiceURI, lang) => ({
+  voiceURI,
+  name: `name of ${voiceURI}`,
+  lang
+});
 
 describe('i18n', () => {
   it('should strip Region Code', () => {
@@ -14,22 +21,13 @@ describe('i18n', () => {
   });
 });
 
-import { getVoiceURI } from '../i18n';
-import { EMPTY_VOICES } from '../providers/SpeechProvider/SpeechProvider.constants';
-
-const makeVoice = (voiceURI, lang) => ({
-  voiceURI,
-  name: `name of ${voiceURI}`,
-  lang
-});
-
 describe('getVoiceURI', () => {
   describe('when there is no compatible voice', () => {
     it('should return EMPTY_VOICES when the voices list is empty', () => {
       const language = 'en';
       const voices = [];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe(EMPTY_VOICES);
     });
@@ -38,7 +36,7 @@ describe('getVoiceURI', () => {
       const language = 42;
       const voices = [];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe(EMPTY_VOICES);
     });
@@ -51,7 +49,7 @@ describe('getVoiceURI', () => {
         makeVoice('v-sn', 'sn-ZW')
       ];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe(EMPTY_VOICES);
     });
@@ -60,7 +58,7 @@ describe('getVoiceURI', () => {
       const language = 'EN';
       const voices = [makeVoice('v-en', 'en-US')];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe(EMPTY_VOICES);
     });
@@ -69,7 +67,7 @@ describe('getVoiceURI', () => {
       const language = 'pt-TL';
       const voices = [makeVoice('v-en', 'en-US'), makeVoice('v-es', 'es-ES')];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe(EMPTY_VOICES);
     });
@@ -80,7 +78,7 @@ describe('getVoiceURI', () => {
       const language = 'en';
       const voices = [makeVoice('v-en', 'en-US')];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe('v-en');
     });
@@ -89,7 +87,7 @@ describe('getVoiceURI', () => {
       const language = 'en';
       const voices = [makeVoice('v-es', 'es-ES'), makeVoice('v-en', 'en-US')];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe('v-en');
     });
@@ -98,7 +96,7 @@ describe('getVoiceURI', () => {
       const language = 'en-GB';
       const voices = [makeVoice('v-us', 'en-US')];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe('v-us');
     });
@@ -107,7 +105,7 @@ describe('getVoiceURI', () => {
       const language = 'pt-BR';
       const voices = [makeVoice('v-en', 'en-US'), makeVoice('v-br', 'pt_BR')];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe('v-br');
     });
@@ -120,7 +118,7 @@ describe('getVoiceURI', () => {
         makeVoice('v-es', 'es-ES')
       ];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe('v-en');
     });
@@ -129,7 +127,7 @@ describe('getVoiceURI', () => {
       const language = 'en';
       const voices = [makeVoice('v1', 'eng-USA'), makeVoice('v2', 'en-US')];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe('v1');
     });
@@ -138,7 +136,7 @@ describe('getVoiceURI', () => {
       const language = 'en';
       const voices = [makeVoice('v-eng', 'eng')];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe('v-eng');
     });
@@ -147,7 +145,7 @@ describe('getVoiceURI', () => {
       const language = 'fi';
       const voices = [makeVoice('v-fil', 'fil-PH')];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe('v-fil');
     });
@@ -156,7 +154,7 @@ describe('getVoiceURI', () => {
       const language = 'es-ES';
       const voices = [makeVoice('v-es', 'es')];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe('v-es');
     });
@@ -169,7 +167,7 @@ describe('getVoiceURI', () => {
         makeVoice('v-br', 'pt-BR')
       ];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe('v-pt');
     });
@@ -178,7 +176,7 @@ describe('getVoiceURI', () => {
       const voices = [makeVoice('v-br', 'pt_BR')];
       const snapshot = JSON.parse(JSON.stringify(voices));
 
-      getVoiceURI('pt-BR', voices);
+      i18n.getVoiceURI('pt-BR', voices);
 
       expect(voices).toEqual(snapshot);
     });
@@ -189,7 +187,7 @@ describe('getVoiceURI', () => {
       const language = 'pt-TL';
       const voices = [makeVoice('v-en', 'en-US'), makeVoice('v-pt', 'pt-PT')];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe('v-pt');
     });
@@ -198,7 +196,7 @@ describe('getVoiceURI', () => {
       const language = 'pt-TL';
       const voices = [makeVoice('v-en', 'en-US'), makeVoice('v-br', 'pt-BR')];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe('v-br');
     });
@@ -211,7 +209,7 @@ describe('getVoiceURI', () => {
         makeVoice('v-pt', 'pt-PT')
       ];
 
-      const result = getVoiceURI(language, voices);
+      const result = i18n.getVoiceURI(language, voices);
 
       expect(result).toBe('v-br');
     });
@@ -222,7 +220,7 @@ describe('getVoiceURI', () => {
       const language = 'en';
       const voices = { voiceURI: 'v-en', name: 'v-en', lang: 'en-US' };
 
-      const act = () => getVoiceURI(language, voices);
+      const act = () => i18n.getVoiceURI(language, voices);
 
       expect(act).toThrow(TypeError);
     });
@@ -231,7 +229,7 @@ describe('getVoiceURI', () => {
       const language = 'en';
       const voices = null;
 
-      const act = () => getVoiceURI(language, voices);
+      const act = () => i18n.getVoiceURI(language, voices);
 
       expect(act).toThrow(TypeError);
     });
@@ -240,7 +238,7 @@ describe('getVoiceURI', () => {
       const language = 'en';
       const voices = [{ voiceURI: 'v-en', name: 'v-en' }];
 
-      const act = () => getVoiceURI(language, voices);
+      const act = () => i18n.getVoiceURI(language, voices);
 
       expect(act).toThrow(TypeError);
     });
@@ -252,7 +250,7 @@ describe('getVoiceURI', () => {
         { voiceURI: 'v-x', name: 'v-x' }
       ];
 
-      const act = () => getVoiceURI(language, voices);
+      const act = () => i18n.getVoiceURI(language, voices);
 
       expect(act).toThrow(TypeError);
     });
@@ -261,7 +259,7 @@ describe('getVoiceURI', () => {
       const language = 123;
       const voices = [makeVoice('v-en', 'en-US')];
 
-      const act = () => getVoiceURI(language, voices);
+      const act = () => i18n.getVoiceURI(language, voices);
 
       expect(act).toThrow(TypeError);
     });
@@ -270,7 +268,7 @@ describe('getVoiceURI', () => {
       const language = undefined;
       const voices = [makeVoice('v-en', 'en-US')];
 
-      const act = () => getVoiceURI(language, voices);
+      const act = () => i18n.getVoiceURI(language, voices);
 
       expect(act).toThrow(TypeError);
     });
