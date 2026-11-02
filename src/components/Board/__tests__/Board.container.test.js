@@ -131,6 +131,7 @@ describe('Board.container', () => {
 
 describe('UNSAFE_componentWillReceiveProps (back navigation)', () => {
   it('does not pop navHistory again when the URL already reflects the active board', () => {
+    // Arrange: history [root, food, soup], URL still on soup
     const previousBoard = jest.fn();
     const instance = new BoardContainer({
       boards: [{ id: 'root' }, { id: 'food' }, { id: 'soup' }],
