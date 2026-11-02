@@ -128,3 +128,25 @@ describe('Board.container', () => {
     });
   });
 });
+
+describe('UNSAFE_componentWillReceiveProps (back navigation)', () => {
+  it('does not pop navHistory again when the URL already reflects the active board', () => {
+    const previousBoard = jest.fn();
+    const instance = new BoardContainer({
+      boards: [{ id: 'root' }, { id: 'food' }, { id: 'soup' }],
+      navHistory: ['root', 'food', 'soup'],
+      match: { params: { id: 'soup' } },
+      changeBoard: jest.fn(),
+      previousBoard,
+      historyRemoveBoard: jest.fn()
+    });
+    instance.scrollToTop = jest.fn();
+    // Act: URL changes to food and Redux already points to food
+    instance.UNSAFE_componentWillReceiveProps({
+      board: { id: 'food' },
+      match: { params: { id: 'food' } }
+    });
+    // Assert: the detector must not treat it as a browser back
+    expect(previousBoard).not.toHaveBeenCalled();
+  });
+});
