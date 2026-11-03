@@ -83,6 +83,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+// The URL is already in sync when the change came from a Redux navigation
+// (e.g. the in-app back arrow) rather than from the browser back button.
 const isUrlSyncedWithActiveBoard = ({ board, match }) =>
   board?.id === match.params.id;
 

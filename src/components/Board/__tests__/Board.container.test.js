@@ -130,8 +130,7 @@ describe('Board.container', () => {
 });
 
 describe('UNSAFE_componentWillReceiveProps (back navigation)', () => {
-  it('does not pop navHistory again when the URL already reflects the active board', () => {
-    // Arrange: history [root, food, soup], URL still on soup
+  const createInstance = () => {
     const previousBoard = jest.fn();
     const instance = new BoardContainer({
       boards: [{ id: 'root' }, { id: 'food' }, { id: 'soup' }],
@@ -142,12 +141,36 @@ describe('UNSAFE_componentWillReceiveProps (back navigation)', () => {
       historyRemoveBoard: jest.fn()
     });
     instance.scrollToTop = jest.fn();
-    // Act: URL changes to food and Redux already points to food
+    return { instance, previousBoard };
+  };
+
+  it('does not pop navHistory again when the URL already reflects the active board', () => {
+    // Arrange: history [root, food, soup], URL still on soup
+    const { instance, previousBoard } = createInstance();
+
+    // Act: Redux already popped to [root, food] and the URL moves to food
     instance.UNSAFE_componentWillReceiveProps({
+      navHistory: ['root', 'food'],
       board: { id: 'food' },
       match: { params: { id: 'food' } }
     });
-    // Assert: the detector must not treat it as a browser back
+
+    // Assert: the browser back detector must not pop a second time
+    expect(previousBoard).not.toHaveBeenCalled();
+  });
+
+  it('does not pop navHistory when a tile navigates to a board already in the history', () => {
+    // Arrange: history [root, food, soup], URL still on soup
+    const { instance, previousBoard } = createInstance();
+
+    // Act: a tile in soup links to food, so the history does not change
+    instance.UNSAFE_componentWillReceiveProps({
+      navHistory: ['root', 'food', 'soup'],
+      board: { id: 'food' },
+      match: { params: { id: 'food' } }
+    });
+
+    // Assert: it is a forward navigation, not a browser back
     expect(previousBoard).not.toHaveBeenCalled();
   });
 });
