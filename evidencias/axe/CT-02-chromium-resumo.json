@@ -1,0 +1,45 @@
+{
+  "cenario": "CT-02",
+  "url": "https://app.cboard.io/board/root",
+  "projeto": "chromium",
+  "data": "2026-11-22T23:20:45.327Z",
+  "motor": {
+    "name": "axe-core",
+    "version": "4.14.1"
+  },
+  "contagem": {
+    "violacoes": 2,
+    "incompletos": 0,
+    "aprovados": 20,
+    "naoAplicaveis": 43
+  },
+  "violacoes": [
+    {
+      "regra": "color-contrast",
+      "impacto": "serious",
+      "criterios": [
+        "wcag2aa",
+        "wcag143"
+      ],
+      "descricao": "Elements must meet minimum color contrast ratio thresholds",
+      "ocorrencias": 1,
+      "exemplos": [
+        ".MuiAlert-message > span"
+      ]
+    },
+    {
+      "regra": "meta-viewport",
+      "impacto": "moderate",
+      "criterios": [
+        "wcag2aa",
+        "wcag144"
+      ],
+      "descricao": "Zooming and scaling must not be disabled",
+      "ocorrencias": 1,
+      "exemplos": [
+        "meta[name=\"viewport\"]"
+      ]
+    }
+  ],
+  "incompletos": []
+}
